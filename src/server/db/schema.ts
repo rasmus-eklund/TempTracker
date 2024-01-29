@@ -5,7 +5,6 @@ import {
   pgTableCreator,
   primaryKey,
   real,
-  serial,
   text,
   timestamp,
   varchar,
@@ -23,7 +22,7 @@ export const createTable = pgTableCreator((name) => `WamPerature_${name}`);
 export const temps = createTable(
   "temps",
   {
-    id: serial("id").primaryKey(),
+    id: text("cuid").primaryKey(),
     temp: real('temperature'),
     createdById: varchar("createdById", { length: 255 })
       .notNull()
