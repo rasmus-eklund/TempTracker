@@ -4,10 +4,9 @@ import { env } from "~/env.js";
 
 export default {
   schema: "./src/server/db/schema.ts",
-  driver: "turso",
+  driver: "pg",
   dbCredentials: {
-    url: env.DATABASE_URL,
-    authToken: env.DATABASE_AUTH_TOKEN,
+    connectionString: env.DATABASE_URL,
   },
   tablesFilter: ["WamPerature_*"],
 } satisfies Config;
