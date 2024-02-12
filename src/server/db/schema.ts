@@ -23,7 +23,7 @@ export const temps = createTable(
   "temps",
   {
     id: text("cuid").primaryKey(),
-    temp: real('temperature'),
+    temp: real("temperature").notNull(),
     createdById: varchar("createdById", { length: 255 })
       .notNull()
       .references(() => users.id),
@@ -35,7 +35,7 @@ export const temps = createTable(
   (example) => ({
     createdByIdIdx: index("createdById_idx").on(example.createdById),
     tempIndex: index("temp_idx").on(example.temp),
-  })
+  }),
 );
 
 export const users = createTable("user", {
@@ -76,7 +76,7 @@ export const accounts = createTable(
       columns: [account.provider, account.providerAccountId],
     }),
     userIdIdx: index("account_userId_idx").on(account.userId),
-  })
+  }),
 );
 
 export const accountsRelations = relations(accounts, ({ one }) => ({
@@ -96,7 +96,7 @@ export const sessions = createTable(
   },
   (session) => ({
     userIdIdx: index("session_userId_idx").on(session.userId),
-  })
+  }),
 );
 
 export const sessionsRelations = relations(sessions, ({ one }) => ({
@@ -112,5 +112,5 @@ export const verificationTokens = createTable(
   },
   (vt) => ({
     compoundKey: primaryKey({ columns: [vt.identifier, vt.token] }),
-  })
+  }),
 );
