@@ -1,16 +1,21 @@
 import { unstable_noStore as noStore } from "next/cache";
+import Link from "next/link";
 import { getServerAuthSession } from "~/server/auth";
-import Login from "./_components/login";
 
 const Home = async () => {
   noStore();
   const session = await getServerAuthSession();
 
-  return (
-    <main className="flex">
-      {session ? <p>{session.user.name}</p> : <Login />}
-    </main>
-  );
+  if (session) {
+    return (
+      <main className="flex">
+        <Link href={"/temps/add"}>Add</Link>
+        <Link href={"/temps/view"}>View</Link>
+      </main>
+    );
+  }
+
+  return <main className="flex"></main>;
 };
 
 export default Home;
