@@ -23,13 +23,20 @@ export const postRouter = createTRPCRouter({
       .select()
       .from(temps)
       .where(eq(temps.createdById, userId));
-    return data.map(({ temp, createdAt }) => ({ date: createdAt, temp }));
+    return data.map(({ temp, createdAt, id }) => ({
+      date: createdAt,
+      temp,
+      id,
+    }));
   }),
 
   update: protectedProcedure
     .input(tempSchemaId)
     .mutation(async ({ ctx, input: { date, id, temp } }) => {
-      await ctx.db.update(temps).set({ id, temp, updatedAt: date });
+      await ctx.db
+        .update(temps)
+        .set({ temp, updatedAt: date })
+        .where(eq(temps.id, id));
     }),
 
   delete: protectedProcedure
