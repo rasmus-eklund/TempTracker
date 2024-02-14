@@ -5,7 +5,7 @@ import Modal from "~/app/_components/Modal";
 import Icon from "~/icons/Icon";
 import { type RouterOutputs } from "~/trpc/shared";
 import RemoveModal from "./RemoveModal";
-import TempForm from "./TempForm";
+import SampleForm from "./SampleForm";
 import { api } from "~/trpc/react";
 
 type Temp = RouterOutputs["temp"]["read"][number];
@@ -43,7 +43,7 @@ const Sample = ({ item }: Props) => {
         <button
           onClick={() => {
             setModalContent(
-              <TempForm
+              <SampleForm
                 disabled={updating}
                 onSubmit={({ date, temp }) =>
                   update({ date, temp, id: item.id })

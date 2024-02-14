@@ -1,6 +1,6 @@
 "use client";
 import { api } from "~/trpc/react";
-import TempForm from "./TempForm";
+import SampleForm from "./SampleForm";
 import { useRef } from "react";
 import Icon from "~/icons/Icon";
 import Modal from "./Modal";
@@ -30,7 +30,7 @@ const AddTempButton = () => {
       </button>
       <p>Add measurement</p>
       <Modal ref={modal} toggleModal={toggleModal}>
-        <TempForm
+        <SampleForm
           disabled={isLoading}
           onSubmit={mutate}
           onCancel={toggleModal}

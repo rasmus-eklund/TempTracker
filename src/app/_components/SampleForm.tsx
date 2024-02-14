@@ -16,7 +16,7 @@ type Props = {
   disabled: boolean;
   onCancel: () => void;
 };
-const TempForm = ({ data, onSubmit, disabled, onCancel }: Props) => {
+const SampleForm = ({ data, onSubmit, disabled, onCancel }: Props) => {
   const { date, temp } = generateDefaultTempAndDate({ data });
   const {
     register,
@@ -64,4 +64,4 @@ const TempForm = ({ data, onSubmit, disabled, onCancel }: Props) => {
   );
 };
 
-export default TempForm;
+export default SampleForm;
