@@ -23,7 +23,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`font-sans ${inter.variable} h-screen`}>
+      <body className={`font-sans ${inter.variable} h-screen flex flex-col`}>
         <TRPCReactProvider>
           <Header />
           {children}
