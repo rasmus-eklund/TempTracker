@@ -7,25 +7,27 @@ import AddTempButton from "./_components/AddTempButton";
 const Home = async () => {
   noStore();
   const session = await getServerAuthSession();
-  const data = await api.temp.read.query();
-
   if (session) {
-    return (
-      <main className="bg-c1 flex max-w-4xl flex-col gap-4 p-5 grow">
-        <PlotTemp data={data.sort((a, b) => Number(a.date) - Number(b.date))} />
-        <AddTempButton />
-        <ul className="flex flex-col gap-2">
-          {data
-            .sort((a, b) => Number(b.date) - Number(a.date))
-            .map((item) => (
-              <Sample key={crypto.randomUUID()} item={item} />
-            ))}
-        </ul>
-      </main>
-    );
+    return <View />;
   }
-
   return <main className="flex"></main>;
+};
+
+const View = async () => {
+  const data = await api.temp.read.query();
+  return (
+    <main className="flex max-w-4xl grow flex-col gap-4 bg-c1 p-5">
+      <PlotTemp data={data.sort((a, b) => Number(a.date) - Number(b.date))} />
+      <AddTempButton />
+      <ul className="flex flex-col gap-2">
+        {data
+          .sort((a, b) => Number(b.date) - Number(a.date))
+          .map((item) => (
+            <Sample key={crypto.randomUUID()} item={item} />
+          ))}
+      </ul>
+    </main>
+  );
 };
 
 export default Home;
