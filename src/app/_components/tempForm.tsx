@@ -4,25 +4,19 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { ClipLoader } from "react-spinners";
 import { tempSchema, type Temp } from "~/zodSchemas";
+import Button from "./Button";
+import {
+  type Data,
+  generateDefaultTempAndDate,
+} from "./generateDefaultTempAndDate";
 
-type Data = { date: Date; temp: number };
-type Props = { data?: Data; onSubmit: (data: Data) => void; disabled: boolean };
-
-const generateDefaultTempAndDate = ({
-  data,
-}: {
+type Props = {
   data?: Data;
-}): { date: string; temp: number } => {
-  if (!data) {
-    return {
-      date: new Date().toISOString().substring(0, 10),
-      temp: 36.6,
-    };
-  }
-  return { date: data.date.toISOString().substring(0, 10), temp: data.temp };
+  onSubmit: (data: Data) => void;
+  disabled: boolean;
+  onCancel: () => void;
 };
-
-const TempForm = ({ data, onSubmit, disabled }: Props) => {
+const TempForm = ({ data, onSubmit, disabled, onCancel }: Props) => {
   const { date, temp } = generateDefaultTempAndDate({ data });
   const {
     register,
@@ -35,7 +29,10 @@ const TempForm = ({ data, onSubmit, disabled }: Props) => {
     return <ClipLoader />;
   }
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-2">
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className="bg-c1 flex flex-col gap-2 rounded-md border border-black p-5"
+    >
       <div className="grid grid-cols-2">
         <label htmlFor="temp">Temperature</label>
         <input
@@ -48,13 +45,20 @@ const TempForm = ({ data, onSubmit, disabled }: Props) => {
         <label htmlFor="date">Date</label>
         <input
           id="date"
-          type="date"
+          type="datetime-local"
           {...register("date")}
           defaultValue={date}
         />
         {errors.date && <p>{errors.date.message}</p>}
       </div>
-      <button type="submit">Save</button>
+      <div className="flex gap-4">
+        <Button onClick={onCancel} type="button">
+          Cancel
+        </Button>
+        <Button callToAction type="submit">
+          Save
+        </Button>
+      </div>
     </form>
   );
 };
