@@ -11,7 +11,7 @@ const Home = async () => {
 
   if (session) {
     return (
-      <main className="bg-c1 flex max-w-4xl flex-col gap-4 p-5">
+      <main className="bg-c1 flex max-w-4xl flex-col gap-4 p-5 grow">
         <PlotTemp data={data.sort((a, b) => Number(a.date) - Number(b.date))} />
         <AddTempButton />
         <ul className="flex flex-col gap-2">
