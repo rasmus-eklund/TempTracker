@@ -31,9 +31,10 @@ const TempForm = ({ data, onSubmit, disabled, onCancel }: Props) => {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="bg-c1 flex flex-col gap-2 rounded-md border border-black p-5"
+      className="flex flex-col gap-5 rounded-md border border-black bg-c1 p-5"
     >
-      <div className="grid grid-cols-2">
+      <h2 className="text-center text-2xl">Edit measurement</h2>
+      <div className="grid grid-cols-2 gap-2">
         <label htmlFor="temp">Temperature</label>
         <input
           id="temp"
@@ -51,7 +52,7 @@ const TempForm = ({ data, onSubmit, disabled, onCancel }: Props) => {
         />
         {errors.date && <p>{errors.date.message}</p>}
       </div>
-      <div className="flex gap-4">
+      <div className="flex justify-evenly gap-4">
         <Button onClick={onCancel} type="button">
           Cancel
         </Button>
