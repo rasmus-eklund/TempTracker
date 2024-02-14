@@ -6,7 +6,12 @@ await import("./src/env.js");
 
 /** @type {import("next").NextConfig} */
 const config = {
-  images: { remotePatterns: [{ hostname: "cdn.discordapp.com" }] },
+  images: {
+    remotePatterns: [
+      { hostname: "lh3.googleusercontent.com" },
+      { hostname: "cdn.discordapp.com" },
+    ],
+  },
 };
 
 export default config;
