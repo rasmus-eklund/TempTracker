@@ -22,7 +22,8 @@ export const postRouter = createTRPCRouter({
     const data = await ctx.db
       .select()
       .from(temps)
-      .where(eq(temps.createdById, userId));
+      .where(eq(temps.createdById, userId))
+      .orderBy(temps.createdAt);
     return data.map(({ temp, createdAt, id }) => ({
       date: createdAt,
       temp,
