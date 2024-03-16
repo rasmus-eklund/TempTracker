@@ -4,27 +4,30 @@ import { api } from "~/trpc/server";
 import PlotTemp from "./_components/PlotTemp";
 import Sample from "./_components/Sample";
 import AddTempButton from "./_components/AddTempButton";
+
 const Home = async () => {
   noStore();
   const session = await getServerAuthSession();
   if (session) {
     return <View />;
   }
-  return <main className="flex"></main>;
+  return (
+    <main className="flex items-center justify-center">
+      <p>Login to access your data.</p>
+    </main>
+  );
 };
 
 const View = async () => {
   const data = await api.temp.read.query();
   return (
-    <main className="flex max-w-4xl grow flex-col gap-4 bg-c1 p-5">
-      <PlotTemp data={data.sort((a, b) => Number(a.date) - Number(b.date))} />
+    <main className="flex grow flex-col gap-4 bg-c1 p-5">
+      <PlotTemp data={data} />
       <AddTempButton />
       <ul className="flex flex-col gap-2">
-        {data
-          .sort((a, b) => Number(b.date) - Number(a.date))
-          .map((item) => (
-            <Sample key={crypto.randomUUID()} item={item} />
-          ))}
+        {data.reverse().map((item) => (
+          <Sample key={crypto.randomUUID()} item={item} />
+        ))}
       </ul>
     </main>
   );
