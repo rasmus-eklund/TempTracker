@@ -6,14 +6,14 @@ export const generateDefaultTempAndDate = ({
 }): { date: string; temp: number } => {
   if (!data) {
     return {
-      date: formatDate(new Date()),
+      date: formatDateTime(new Date()),
       temp: 36.6,
     };
   }
-  return { date: formatDate(data.date), temp: data.temp };
+  return { date: formatDateTime(data.date), temp: data.temp };
 };
 
-const formatDate = (date: Date) => {
+export const formatDateTime = (date: Date) => {
   const year = date.getFullYear();
   const month = ("0" + (date.getMonth() + 1)).slice(-2);
   const day = ("0" + date.getDate()).slice(-2);
@@ -22,4 +22,11 @@ const formatDate = (date: Date) => {
   const formattedDate =
     year + "-" + month + "-" + day + "T" + hours + ":" + minutes;
   return formattedDate;
+};
+
+export const formatDate = (date: Date) => {
+  const year = date.getFullYear();
+  const month = ("0" + (date.getMonth() + 1)).slice(-2);
+  const day = ("0" + date.getDate()).slice(-2);
+  return `${year}-${month}-${day}`;
 };
