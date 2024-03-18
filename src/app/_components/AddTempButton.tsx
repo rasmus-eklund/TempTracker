@@ -24,13 +24,14 @@ const AddTempButton = () => {
     },
   });
   return (
-    <div className="bg-c2 flex items-center gap-2 rounded-md">
+    <div className="flex items-center gap-2 rounded-md bg-c2">
       <button onClick={toggleModal}>
-        <Icon icon="plus" className="fill-c4 h-10 w-10" />
+        <Icon icon="plus" className="h-10 w-10 fill-c4" />
       </button>
       <p>Add measurement</p>
       <Modal ref={modal} toggleModal={toggleModal}>
         <SampleForm
+          data={{ date: new Date(), temp: 36.6 }}
           disabled={isLoading}
           onSubmit={mutate}
           onCancel={toggleModal}
