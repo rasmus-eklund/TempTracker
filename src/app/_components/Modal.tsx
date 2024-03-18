@@ -5,7 +5,7 @@ const Modal = forwardRef<HTMLDialogElement, Props>(
   ({ children, toggleModal }, ref) => {
     return (
       <dialog
-        className="backdrop:backdrop-blur"
+        className="bg-opacity-0 backdrop:backdrop-blur"
         ref={ref}
         onClick={(e) => {
           if (e.currentTarget === e.target) {
@@ -13,7 +13,7 @@ const Modal = forwardRef<HTMLDialogElement, Props>(
           }
         }}
       >
-        <div className="h-full w-full">{children}</div>
+        <div className="size-full">{children}</div>
       </dialog>
     );
   },
