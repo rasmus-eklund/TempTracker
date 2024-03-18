@@ -1,17 +1,19 @@
 "use client";
 import { api } from "~/trpc/react";
 import SampleForm from "./SampleForm";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import Icon from "~/icons/Icon";
 import Modal from "./Modal";
 import { useRouter } from "next/navigation";
 
 const AddTempButton = () => {
+  const [today, setToday] = useState(new Date());
   const modal = useRef<HTMLDialogElement>(null);
   const toggleModal = () => {
     if (!modal.current) {
       return;
     }
+    setToday(new Date());
     modal.current.hasAttribute("open")
       ? modal.current.close()
       : modal.current.showModal();
@@ -31,7 +33,7 @@ const AddTempButton = () => {
       <p>Add measurement</p>
       <Modal ref={modal} toggleModal={toggleModal}>
         <SampleForm
-          data={{ date: new Date(), temp: 36.6 }}
+          data={{ date: today, temp: 36.6 }}
           disabled={isLoading}
           onSubmit={mutate}
           onCancel={toggleModal}
