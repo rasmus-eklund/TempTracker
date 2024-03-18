@@ -5,19 +5,20 @@ import { useForm } from "react-hook-form";
 import { ClipLoader } from "react-spinners";
 import { tempSchema, type Temp } from "~/zodSchemas";
 import Button from "./Button";
-import {
-  type Data,
-  generateDefaultTempAndDate,
-} from "./generateDefaultTempAndDate";
+import { formatDateTime } from "../utils/formatData";
 
 type Props = {
-  data?: Data;
-  onSubmit: (data: Data) => void;
+  data: Temp;
+  onSubmit: (data: Temp) => void;
   disabled: boolean;
   onCancel: () => void;
 };
-const SampleForm = ({ data, onSubmit, disabled, onCancel }: Props) => {
-  const { date, temp } = generateDefaultTempAndDate({ data });
+const SampleForm = ({
+  data: { date, temp },
+  onSubmit,
+  disabled,
+  onCancel,
+}: Props) => {
   const {
     register,
     handleSubmit,
@@ -26,7 +27,12 @@ const SampleForm = ({ data, onSubmit, disabled, onCancel }: Props) => {
     resolver: zodResolver(tempSchema),
   });
   if (disabled) {
-    return <ClipLoader />;
+    return (
+      <div className="flex size-52 flex-col items-center justify-center gap-4 rounded-3xl bg-c3">
+        <p>Adding sample</p>
+        <ClipLoader size={100} />
+      </div>
+    );
   }
   return (
     <form
@@ -48,7 +54,7 @@ const SampleForm = ({ data, onSubmit, disabled, onCancel }: Props) => {
           id="date"
           type="datetime-local"
           {...register("date")}
-          defaultValue={date}
+          defaultValue={formatDateTime(date)}
         />
         {errors.date && <p>{errors.date.message}</p>}
       </div>
