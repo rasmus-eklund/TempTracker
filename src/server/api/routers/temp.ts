@@ -1,8 +1,8 @@
 import { createId } from "@paralleldrive/cuid2";
-import { eq } from "drizzle-orm";
+import { and, eq, gt, lt } from "drizzle-orm";
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 import { temps } from "~/server/db/schema";
-import { idSchema, tempSchema, tempSchemaId } from "~/zodSchemas";
+import { fromToSchema, idSchema, tempSchema, tempSchemaId } from "~/zodSchemas";
 
 export const postRouter = createTRPCRouter({
   create: protectedProcedure
@@ -17,19 +17,23 @@ export const postRouter = createTRPCRouter({
       });
     }),
 
-  read: protectedProcedure.query(async ({ ctx }) => {
-    const userId = ctx.session.user.id;
-    const data = await ctx.db
-      .select()
-      .from(temps)
-      .where(eq(temps.createdById, userId))
-      .orderBy(temps.createdAt);
-    return data.map(({ temp, createdAt, id }) => ({
-      date: createdAt,
-      temp,
-      id,
-    }));
-  }),
+  read: protectedProcedure
+    .input(fromToSchema)
+    .query(async ({ ctx, input: { from, to } }) => {
+      const userId = ctx.session.user.id;
+      const data = await ctx.db
+        .select({ id: temps.id, date: temps.createdAt, temp: temps.temp })
+        .from(temps)
+        .where(
+          and(
+            eq(temps.createdById, userId),
+            gt(temps.createdAt, from),
+            lt(temps.createdAt, to),
+          ),
+        )
+        .orderBy(temps.createdAt);
+      return data;
+    }),
 
   update: protectedProcedure
     .input(tempSchemaId)
