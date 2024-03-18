@@ -39,7 +39,7 @@ const Sample = ({ item }: Props) => {
       </p>
       <div className="flex items-center gap-2">
         <Icon icon="temp" className="fill-c3 h-6 w-6" />
-        <p>{item.temp}</p>
+        <p>{item.temp.toFixed(1)}</p>
         <button
           onClick={() => {
             setModalContent(
