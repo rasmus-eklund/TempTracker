@@ -1,18 +1,3 @@
-export type Data = { date: Date; temp: number };
-export const generateDefaultTempAndDate = ({
-  data,
-}: {
-  data?: Data;
-}): { date: string; temp: number } => {
-  if (!data) {
-    return {
-      date: formatDateTime(new Date()),
-      temp: 36.6,
-    };
-  }
-  return { date: formatDateTime(data.date), temp: data.temp };
-};
-
 export const formatDateTime = (date: Date) => {
   const year = date.getFullYear();
   const month = ("0" + (date.getMonth() + 1)).slice(-2);
@@ -24,7 +9,7 @@ export const formatDateTime = (date: Date) => {
   return formattedDate;
 };
 
-export const formatDate = (date: Date) => {
+export const dateToString = (date: Date) => {
   const year = date.getFullYear();
   const month = ("0" + (date.getMonth() + 1)).slice(-2);
   const day = ("0" + date.getDate()).slice(-2);

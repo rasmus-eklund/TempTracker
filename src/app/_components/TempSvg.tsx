@@ -10,7 +10,7 @@ type Props = {
   margin?: { top: number; right: number; bottom: number; left: number };
 };
 
-const PlotTemp = ({
+const TempSvg = ({
   data,
   width = 320,
   height = 200,
@@ -88,4 +88,4 @@ const PlotTemp = ({
   );
 };
 
-export default PlotTemp;
+export default TempSvg;
