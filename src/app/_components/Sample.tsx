@@ -7,6 +7,7 @@ import { type RouterOutputs } from "~/trpc/shared";
 import RemoveModal from "./RemoveModal";
 import SampleForm from "./SampleForm";
 import { api } from "~/trpc/react";
+import { useRouter } from "next/navigation";
 
 type Temp = RouterOutputs["temp"]["read"][number];
 type Props = {
@@ -23,10 +24,16 @@ const Sample = ({ item }: Props) => {
       ? modal.current.close()
       : modal.current.showModal();
   };
-  const { mutate: update, isLoading: updating } = api.temp.update.useMutation();
+  const router = useRouter();
+  const { mutate: update, isLoading: updating } = api.temp.update.useMutation({
+    onSuccess: () => {
+      router.refresh();
+      toggleModal();
+    },
+  });
 
   return (
-    <li className="bg-c2 flex items-center justify-between gap-2 rounded-md p-2 select-none">
+    <li className="flex select-none items-center justify-between gap-2 rounded-md bg-c2 p-2">
       <p>
         {item.date.toLocaleString("sv-SE", {
           day: "2-digit",
@@ -38,8 +45,8 @@ const Sample = ({ item }: Props) => {
         })}
       </p>
       <div className="flex items-center gap-2">
-        <Icon icon="temp" className="fill-c3 h-6 w-6" />
-        <p>{item.temp.toFixed(1)}</p>
+        <Icon icon="temp" className="h-6 w-6 fill-c3" />
+        <p>{item.temp.toFixed(2)}</p>
         <button
           onClick={() => {
             setModalContent(
