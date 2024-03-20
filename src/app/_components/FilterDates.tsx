@@ -29,7 +29,7 @@ const FilterDates = () => {
         e.preventDefault();
         changeDate(filter);
       }}
-      className="flex items-center gap-2 rounded-md bg-c3 p-3"
+      className="grid grid-cols-2 gap-2 rounded-md bg-c3 p-3"
     >
       <label htmlFor="start-date">Från</label>
       <input
