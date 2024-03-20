@@ -29,7 +29,7 @@ const SampleForm = ({
   if (disabled) {
     return (
       <div className="flex size-52 flex-col items-center justify-center gap-4 rounded-3xl bg-c3">
-        <p>Adding sample</p>
+        <p>Please wait</p>
         <ClipLoader size={100} />
       </div>
     );
