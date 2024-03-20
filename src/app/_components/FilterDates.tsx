@@ -29,28 +29,31 @@ const FilterDates = () => {
         e.preventDefault();
         changeDate(filter);
       }}
-      className="grid grid-cols-2 gap-2 rounded-md bg-c3 p-3"
+      className="flex flex-col gap-2 rounded-md bg-c3 p-3"
     >
-      <label htmlFor="start-date">Från</label>
-      <input
-        id="start-date"
-        type="date"
-        className="px-1"
-        value={dateToString(filter.from)}
-        onChange={({ target: { value } }) =>
-          setFilter((p) => ({ ...p, from: new Date(value) }))
-        }
-      />
-
-      <label htmlFor="end-date">Till</label>
-      <input
-        id="end-date"
-        type="date"
-        value={dateToString(filter.to)}
-        onChange={({ target: { value } }) =>
-          setFilter((p) => ({ ...p, to: new Date(value) }))
-        }
-      />
+      <div className="flex items-center justify-between">
+        <label htmlFor="start-date">Från</label>
+        <input
+          id="start-date"
+          type="date"
+          className="px-1"
+          value={dateToString(filter.from)}
+          onChange={({ target: { value } }) =>
+            setFilter((p) => ({ ...p, from: new Date(value) }))
+          }
+        />
+      </div>
+      <div className="flex items-center justify-between">
+        <label htmlFor="end-date">Till</label>
+        <input
+          id="end-date"
+          type="date"
+          value={dateToString(filter.to)}
+          onChange={({ target: { value } }) =>
+            setFilter((p) => ({ ...p, to: new Date(value) }))
+          }
+        />
+      </div>
       <Button callToAction type="submit">
         Ok
       </Button>
