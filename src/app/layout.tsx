@@ -11,8 +11,8 @@ const inter = Inter({
 });
 
 export const metadata = {
-  title: "WamPerature",
-  description: "Record your temperature over time.",
+  title: "TempTracker",
+  description: "Track your temperature over time.",
   icons: [{ rel: "icon", url: "/favicon.ico" }],
 };
 
