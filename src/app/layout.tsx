@@ -3,7 +3,7 @@ import "~/styles/globals.css";
 import { Inter } from "next/font/google";
 
 import { TRPCReactProvider } from "~/trpc/react";
-import Header from "./_components/NavBar";
+import NavBar from "./_components/NavBar";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -25,7 +25,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={`font-sans ${inter.variable} h-screen flex flex-col`}>
         <TRPCReactProvider>
-          <Header />
+          <NavBar />
           {children}
         </TRPCReactProvider>
       </body>

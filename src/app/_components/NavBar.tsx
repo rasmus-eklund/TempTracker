@@ -2,7 +2,7 @@ import { getServerAuthSession } from "~/server/auth";
 import { Login } from "./Auth";
 import UserCard from "./UserCard";
 
-const Header = async () => {
+const NavBar = async () => {
   const session = await getServerAuthSession();
   return (
     <header className="flex items-center justify-between bg-c3 p-4">
@@ -12,4 +12,4 @@ const Header = async () => {
   );
 };
 
-export default Header;
+export default NavBar;
