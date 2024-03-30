@@ -49,7 +49,7 @@ export const users = createTable("user", {
     mode: "date",
   }).default(sql`CURRENT_TIMESTAMP`),
   image: varchar("image", { length: 255 }),
-  role: userRoleEnum("role"),
+  role: userRoleEnum("role").notNull().default("user"),
 });
 
 export const usersRelations = relations(users, ({ many }) => ({
