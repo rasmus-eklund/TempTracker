@@ -2,6 +2,7 @@ import { relations, sql } from "drizzle-orm";
 import {
   index,
   integer,
+  pgEnum,
   pgTableCreator,
   primaryKey,
   real,
@@ -38,6 +39,8 @@ export const temps = createTable(
   }),
 );
 
+export const userRoleEnum = pgEnum("role", ["user", "admin"]);
+
 export const users = createTable("user", {
   id: varchar("id", { length: 255 }).notNull().primaryKey(),
   name: varchar("name", { length: 255 }),
@@ -46,6 +49,7 @@ export const users = createTable("user", {
     mode: "date",
   }).default(sql`CURRENT_TIMESTAMP`),
   image: varchar("image", { length: 255 }),
+  role: userRoleEnum("role"),
 });
 
 export const usersRelations = relations(users, ({ many }) => ({

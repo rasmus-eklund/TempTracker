@@ -20,3 +20,5 @@ export const fromToSchema = z.object({
   to: z.coerce.date(),
 });
 export type FromTo = z.infer<typeof fromToSchema>;
+
+export type UserRole = "user" | "admin";
