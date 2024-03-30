@@ -4,6 +4,7 @@ import { Inter } from "next/font/google";
 
 import { TRPCReactProvider } from "~/trpc/react";
 import NavBar from "./_components/NavBar";
+import { env } from "~/env";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -11,7 +12,7 @@ const inter = Inter({
 });
 
 export const metadata = {
-  title: "TempTracker",
+  title: env.NODE_ENV === "development" ? "DEV: TempTracker" : "TempTracker",
   description: "Track your temperature over time.",
   icons: [{ rel: "icon", url: "/favicon.ico" }],
 };
@@ -23,7 +24,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`font-sans ${inter.variable} h-screen flex flex-col`}>
+      <body className={`font-sans ${inter.variable} flex h-screen flex-col`}>
         <TRPCReactProvider>
           <NavBar />
           {children}
