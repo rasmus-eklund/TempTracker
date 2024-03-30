@@ -1,4 +1,5 @@
 import { getServerAuthSession } from "~/server/auth";
+import GetData from "./_components/GetData";
 
 const Admin = async () => {
   const session = await getServerAuthSession();
@@ -9,6 +10,7 @@ const Admin = async () => {
       </div>
     );
   }
+  console.log(session.user);
   if (session.user.role !== "admin") {
     return (
       <div>
@@ -16,7 +18,12 @@ const Admin = async () => {
       </div>
     );
   }
-  return <div>Welcome</div>;
+  return (
+    <div>
+      <p>Welcome</p>
+      <GetData />
+    </div>
+  );
 };
 
 export default Admin;
