@@ -1,5 +1,6 @@
 import { getServerAuthSession } from "~/server/auth";
 import GetData from "./_components/GetData";
+import { getUser } from "./_components/GetUser";
 
 const Admin = async () => {
   const session = await getServerAuthSession();
@@ -10,8 +11,9 @@ const Admin = async () => {
       </div>
     );
   }
-  console.log(session.user);
-  if (session.user.role !== "admin") {
+  const user = await getUser(session.user.id);
+
+  if (user?.role !== "admin") {
     return (
       <div>
         <p>Restricted area!</p>
