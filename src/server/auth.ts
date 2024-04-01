@@ -1,4 +1,5 @@
 import { DrizzleAdapter } from "@auth/drizzle-adapter";
+import { eq } from "drizzle-orm";
 import {
   getServerSession,
   type DefaultSession,
@@ -10,7 +11,7 @@ import GoogleProvider from "next-auth/providers/google";
 
 import { env } from "~/env";
 import { db } from "~/server/db";
-import { createTable } from "~/server/db/schema";
+import { createTable, users } from "~/server/db/schema";
 import type { UserRole } from "~/zodSchemas";
 
 /**
@@ -41,14 +42,21 @@ declare module "next-auth" {
  */
 export const authOptions: NextAuthOptions = {
   callbacks: {
-    session: ({ session, user }) => ({
-      ...session,
-      user: {
-        ...session.user,
-        id: user.id,
-        role: user.role,
-      },
-    }),
+    session: async ({ session, user }) => {
+      const dbuser = await db
+        .select({ role: users.role })
+        .from(users)
+        .where(eq(users.id, user.id));
+      const role = dbuser[0]?.role ?? "user";
+      return {
+        ...session,
+        user: {
+          ...session.user,
+          id: user.id,
+          role,
+        },
+      };
+    },
   },
   adapter: DrizzleAdapter(db, createTable) as Adapter,
   providers: [
