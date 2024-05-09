@@ -24,7 +24,6 @@ const TempsByDay = (props: Props) => {
         <CartesianGrid />
         <XAxis
           dataKey="date"
-          interval={0}
           tickFormatter={(tick: string) =>
             tick.split("-").slice(1).reverse().join("/")
           }
