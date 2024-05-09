@@ -1,6 +1,6 @@
 "use client";
 import { signIn, signOut } from "next-auth/react";
-import Button from "./Button";
+import { Button } from "~/components/ui/button";
 
 export const Login = () => {
   return (
@@ -16,6 +16,7 @@ export const Login = () => {
 export const Logout = () => {
   return (
     <Button
+      variant="secondary"
       onClick={async () => {
         await signOut();
       }}
