@@ -1,5 +1,5 @@
 import { createId } from "@paralleldrive/cuid2";
-import { and, eq, lte, gte } from "drizzle-orm";
+import { and, eq, lte, gte, asc } from "drizzle-orm";
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 import { temps } from "~/server/db/schema";
 import { fromToSchema, idSchema, tempSchema, tempSchemaId } from "~/zodSchemas";
@@ -31,7 +31,7 @@ export const postRouter = createTRPCRouter({
             lte(temps.createdAt, to),
           ),
         )
-        .orderBy(temps.createdAt);
+        .orderBy(asc(temps.createdAt));
       return data;
     }),
 
