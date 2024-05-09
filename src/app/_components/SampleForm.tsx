@@ -4,8 +4,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { ClipLoader } from "react-spinners";
 import { tempSchema, type Temp } from "~/zodSchemas";
-import Button from "./Button";
 import { formatDateTime } from "../utils/formatData";
+import { Button } from "~/components/ui/button";
 
 type Props = {
   data: Temp;
@@ -59,12 +59,10 @@ const SampleForm = ({
         {errors.date && <p>{errors.date.message}</p>}
       </div>
       <div className="flex justify-evenly gap-4">
-        <Button onClick={onCancel} type="button">
+        <Button variant="secondary" onClick={onCancel} type="button">
           Cancel
         </Button>
-        <Button callToAction type="submit">
-          Save
-        </Button>
+        <Button type="submit">Save</Button>
       </div>
     </form>
   );

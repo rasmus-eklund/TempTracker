@@ -2,8 +2,8 @@
 import { useRouter } from "next/navigation";
 import { dateToString } from "../utils/formatData";
 import { useState } from "react";
-import Button from "./Button";
 import { type FromTo } from "~/zodSchemas";
+import { Button } from "~/components/ui/button";
 
 const FilterDates = () => {
   const router = useRouter();
@@ -54,9 +54,7 @@ const FilterDates = () => {
           }
         />
       </div>
-      <Button callToAction type="submit">
-        Ok
-      </Button>
+      <Button type="submit">Ok</Button>
     </form>
   );
 };

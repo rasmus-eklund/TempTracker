@@ -1,9 +1,9 @@
 "use client";
 
 import { ClipLoader } from "react-spinners";
-import Button from "./Button";
 import { api } from "~/trpc/react";
 import { useRouter } from "next/navigation";
+import { Button } from "~/components/ui/button";
 
 type Props = { toggleModal: () => void; id: string };
 
