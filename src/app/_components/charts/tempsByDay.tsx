@@ -4,6 +4,7 @@ import {
   CartesianGrid,
   Line,
   LineChart,
+  ReferenceLine,
   ResponsiveContainer,
   Tooltip,
   XAxis,
@@ -13,15 +14,16 @@ import { dateToString } from "~/app/utils/formatData";
 
 type Temp = RouterOutputs["temp"]["read"][number];
 
-const formatTemp = (t: string) => `${t} ° C`;
+const formatTemp = (t: string) => `${t}°C`;
 
 type Props = { data: Temp[] };
 const TempsByDay = (props: Props) => {
   const data = props.data.map((i) => ({ ...i, date: dateToString(i.date) }));
+  const maxValue = Math.max(...data.map(({temp}) => temp))
   return (
-    <ResponsiveContainer width="100%" minHeight={200}>
-      <LineChart data={data} margin={{ left: 2, right: 2, top: 2, bottom: 2 }}>
-        <CartesianGrid />
+    <ResponsiveContainer width="100%" minHeight={200} maxHeight={400}>
+      <LineChart data={data} margin={{ left: 0, right: 10, top: 5, bottom: 5 }}>
+        <CartesianGrid  />
         <XAxis
           dataKey="date"
           tickFormatter={(tick: string) =>
@@ -29,6 +31,7 @@ const TempsByDay = (props: Props) => {
           }
         />
         <YAxis
+          allowDecimals={false}
           domain={[
             (dataMin: number) => Math.round(dataMin - 1),
             (dataMax: number) => Math.round(dataMax + 1),
@@ -36,11 +39,8 @@ const TempsByDay = (props: Props) => {
           tickFormatter={formatTemp}
         />
         <Tooltip formatter={formatTemp} />
-        <Line
-          name="Temperaturer"
-          dataKey="temp"
-          type="monotone"
-        />
+        <Line name="Temperaturer" dataKey="temp" type="monotone" dot={false} />
+        <ReferenceLine y={maxValue} stroke="red" strokeDasharray="3 3" />
       </LineChart>
     </ResponsiveContainer>
   );
