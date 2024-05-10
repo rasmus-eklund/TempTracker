@@ -5,6 +5,7 @@ import { Inter } from "next/font/google";
 import { TRPCReactProvider } from "~/trpc/react";
 import NavBar from "./_components/NavBar";
 import { env } from "~/env";
+import { Toaster } from "~/components/ui/sonner";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -28,6 +29,7 @@ export default function RootLayout({
         <TRPCReactProvider>
           <NavBar />
           {children}
+          <Toaster />
         </TRPCReactProvider>
       </body>
     </html>
