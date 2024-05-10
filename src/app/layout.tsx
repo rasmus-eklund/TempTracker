@@ -2,7 +2,6 @@ import "~/styles/globals.css";
 
 import { Inter } from "next/font/google";
 
-import { TRPCReactProvider } from "~/trpc/react";
 import NavBar from "./_components/NavBar";
 import { env } from "~/env";
 import { Toaster } from "~/components/ui/sonner";
@@ -26,11 +25,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`font-sans ${inter.variable} flex h-screen flex-col`}>
-        <TRPCReactProvider>
-          <NavBar />
-          {children}
-          <Toaster />
-        </TRPCReactProvider>
+        <NavBar />
+        {children}
+        <Toaster />
       </body>
     </html>
   );
