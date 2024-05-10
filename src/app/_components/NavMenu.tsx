@@ -29,9 +29,7 @@ const NavMenu = async () => {
             <DropdownMenuSeparator />
           </>
         ) : null}
-        <DropdownMenuItem asChild>
-          {session ? <Logout /> : <Login />}
-        </DropdownMenuItem>
+        <DropdownMenuItem>{session ? <Logout /> : <Login />}</DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );
