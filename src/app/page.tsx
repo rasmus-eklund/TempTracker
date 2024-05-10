@@ -1,18 +1,18 @@
 import { getServerAuthSession } from "~/server/auth";
-import { api } from "~/trpc/server";
-import Sample from "./_components/Sample";
+import SampleItem from "./_components/SampleItem";
 import FilterDates from "./_components/FilterDates";
-import { parseSearch } from "~/lib/utils";
+import { parseDates } from "~/lib/utils";
 
 import dynamic from "next/dynamic";
 import AddSample from "./_components/AddSample";
+import { getSamples } from "~/server/api/temps";
 
 const Chart = dynamic(() => import("./_components/charts/tempsByDay"), {
   ssr: false,
 });
 
 type Props = {
-  searchParams: Record<string, string | string[] | undefined>;
+  searchParams?: { from?: string; to?: string };
 };
 
 const Home = async ({ searchParams }: Props) => {
@@ -24,8 +24,7 @@ const Home = async ({ searchParams }: Props) => {
       </main>
     );
   }
-  const dates = parseSearch({ searchParams });
-  const data = await api.temp.read.query(dates);
+  const data = await getSamples(parseDates({ searchParams }));
   if (session) {
     return (
       <main className="flex grow flex-col gap-4 bg-c1 py-2 md:p-5">
@@ -34,7 +33,7 @@ const Home = async ({ searchParams }: Props) => {
         <AddSample />
         <ul className="flex flex-col gap-2">
           {data.reverse().map((item) => (
-            <Sample key={item.id} item={item} />
+            <SampleItem key={item.id} item={item} />
           ))}
         </ul>
       </main>
