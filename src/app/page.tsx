@@ -5,8 +5,8 @@ import FilterDates from "./_components/FilterDates";
 import { parseSearch } from "~/lib/utils";
 
 import dynamic from "next/dynamic";
-import AddTemp from "./_components/AddTemp";
-import { createSample } from "~/server/api/temps";
+import AddSample from "./_components/AddSample";
+
 const Chart = dynamic(() => import("./_components/charts/tempsByDay"), {
   ssr: false,
 });
@@ -31,7 +31,7 @@ const Home = async ({ searchParams }: Props) => {
       <main className="flex grow flex-col gap-4 bg-c1 py-2 md:p-5">
         <FilterDates />
         <Chart data={data} />
-        <AddTemp submit={createSample} />
+        <AddSample />
         <ul className="flex flex-col gap-2">
           {data.reverse().map((item) => (
             <Sample key={item.id} item={item} />
