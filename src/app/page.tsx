@@ -2,7 +2,7 @@ import { getServerAuthSession } from "~/server/auth";
 import { api } from "~/trpc/server";
 import Sample from "./_components/Sample";
 import FilterDates from "./_components/FilterDates";
-import parseSearch from "./utils/parseUrlDates";
+import { parseSearch } from "~/lib/utils";
 
 import dynamic from "next/dynamic";
 import AddTemp from "./_components/AddTemp";
@@ -28,7 +28,7 @@ const Home = async ({ searchParams }: Props) => {
   const data = await api.temp.read.query(dates);
   if (session) {
     return (
-      <main className="flex grow flex-col gap-4 bg-c1 md:p-5 py-2">
+      <main className="flex grow flex-col gap-4 bg-c1 py-2 md:p-5">
         <FilterDates />
         <Chart data={data} />
         <AddTemp submit={createSample} />
