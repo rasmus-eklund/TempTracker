@@ -4,7 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { ClipLoader } from "react-spinners";
 import { tempSchema, type Temp } from "~/zodSchemas";
-import { formatDateTime } from "../utils/formatData";
+import { formatDateTime } from "~/lib/utils";
 import { Button } from "~/components/ui/button";
 
 type Props = {

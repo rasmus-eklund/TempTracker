@@ -10,7 +10,7 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-import { dateToString } from "~/app/utils/formatData";
+import { dateToString } from "~/lib/utils";
 
 type Temp = RouterOutputs["temp"]["read"][number];
 
