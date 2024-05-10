@@ -33,7 +33,7 @@ const Home = async ({ searchParams }: Props) => {
         <Chart data={data} />
         <AddTemp submit={createSample} />
         <ul className="flex flex-col gap-2">
-          {data.map((item) => (
+          {data.reverse().map((item) => (
             <Sample key={item.id} item={item} />
           ))}
         </ul>
