@@ -1,6 +1,5 @@
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
-import { fromToSchema, type FromTo } from "~/zodSchemas";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -21,13 +20,17 @@ export const dateToString = (date: Date) => {
   return date.toLocaleString("sv-SE", { dateStyle: "short" });
 };
 
-type Props = {
-  searchParams: Record<string, string | string[] | undefined>;
-};
-export const parseSearch = ({ searchParams }: Props): FromTo => {
-  const parsed = fromToSchema.safeParse(searchParams);
-  if (!parsed.success) {
-    return { from: new Date("2000-01-01"), to: new Date() };
+export const parseDates = ({
+  searchParams,
+}: {
+  searchParams?: { from?: string; to?: string };
+}) => {
+  if (searchParams) {
+    const { from, to } = searchParams;
+    return {
+      from: from ? new Date(from) : new Date("2000-01-01"),
+      to: to ? new Date(to) : new Date(),
+    };
   }
-  return parsed.data;
+  return { from: new Date("2000-01-01"), to: new Date() };
 };
