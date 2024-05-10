@@ -3,10 +3,10 @@
 import { createId } from "@paralleldrive/cuid2";
 import { db } from "../db";
 import { temps } from "../db/schema";
-import type { TempId, Temp } from "~/zodSchemas";
+import type { Sample, Temp, FromTo } from "~/zodSchemas";
 import { getServerAuthSession } from "../auth";
 import { revalidatePath } from "next/cache";
-import { eq } from "drizzle-orm";
+import { and, asc, eq, gte, lte } from "drizzle-orm";
 
 export const createSample = async ({ temp, date }: Temp) => {
   const session = await getServerAuthSession();
@@ -32,11 +32,30 @@ export const removeSample = async (id: string) => {
   revalidatePath("/");
 };
 
-export const editSample = async ({ id, date, temp }: TempId) => {
+export const editSample = async ({ id, date, temp }: Sample) => {
   const session = await getServerAuthSession();
   if (!session) {
     throw new Error("Unauthorized");
   }
   await db.update(temps).set({ temp, updatedAt: date }).where(eq(temps.id, id));
   revalidatePath("/");
+};
+
+export const getSamples = async ({ from, to }: FromTo) => {
+  const session = await getServerAuthSession();
+  if (!session) {
+    throw new Error("Unauthorized");
+  }
+  const data = await db
+    .select({ id: temps.id, date: temps.createdAt, temp: temps.temp })
+    .from(temps)
+    .where(
+      and(
+        eq(temps.createdById, session.user.id),
+        gte(temps.createdAt, from),
+        lte(temps.createdAt, to),
+      ),
+    )
+    .orderBy(asc(temps.createdAt));
+  return data;
 };
