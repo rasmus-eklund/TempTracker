@@ -1,5 +1,4 @@
 "use client";
-import { type RouterOutputs } from "~/trpc/shared";
 import {
   CartesianGrid,
   Line,
@@ -11,19 +10,18 @@ import {
   YAxis,
 } from "recharts";
 import { dateToString } from "~/lib/utils";
-
-type Temp = RouterOutputs["temp"]["read"][number];
+import type { Sample } from "~/zodSchemas";
 
 const formatTemp = (t: string) => `${t}°C`;
 
-type Props = { data: Temp[] };
+type Props = { data: Sample[] };
 const TempsByDay = (props: Props) => {
   const data = props.data.map((i) => ({ ...i, date: dateToString(i.date) }));
-  const maxValue = Math.max(...data.map(({temp}) => temp))
+  const maxValue = Math.max(...data.map(({ temp }) => temp));
   return (
     <ResponsiveContainer width="100%" minHeight={200} maxHeight={400}>
       <LineChart data={data} margin={{ left: 0, right: 10, top: 5, bottom: 5 }}>
-        <CartesianGrid  />
+        <CartesianGrid />
         <XAxis
           dataKey="date"
           tickFormatter={(tick: string) =>
