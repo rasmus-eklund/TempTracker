@@ -134,9 +134,11 @@ const AddTemp = ({ date, submit }: Props) => {
             />
           </form>
         </Form>
-        <DialogFooter>
+        <DialogFooter className="flex-row justify-between">
           <DialogClose asChild>
-            <Button>Close</Button>
+            <Button variant="secondary" type="button">
+              Close
+            </Button>
           </DialogClose>
           <Button form="addTempForm" type="submit">
             Submit
