@@ -1,13 +1,13 @@
 import Icon from "~/icons/Icon";
 import ConfirmRemoveSample from "./ConfirmRemoveSample";
-import type { TempId } from "~/zodSchemas";
+import type { Sample } from "~/zodSchemas";
 import SampleForm from "./SampleForm";
 import { editSample } from "~/server/api/temps";
 
 type Props = {
-  item: TempId;
+  item: Sample;
 };
-const Sample = ({ item }: Props) => {
+const SampleItem = ({ item }: Props) => {
   return (
     <li className="flex select-none items-center justify-between gap-2 rounded-md bg-c2 p-2">
       <p>
@@ -38,4 +38,4 @@ const Sample = ({ item }: Props) => {
   );
 };
 
-export default Sample;
+export default SampleItem;
