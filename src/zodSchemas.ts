@@ -5,7 +5,7 @@ export const tempSchemaId = z.object({
   temp: z.coerce.number().positive(),
   date: z.coerce.date(),
 });
-export type TempId = z.infer<typeof tempSchemaId>;
+export type Sample = z.infer<typeof tempSchemaId>;
 
 export const tempSchema = z.object({
   temp: z.coerce.number().positive(),
