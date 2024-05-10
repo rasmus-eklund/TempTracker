@@ -1,70 +1,153 @@
 "use client";
-
-import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { ClipLoader } from "react-spinners";
-import { tempSchema, type Temp } from "~/zodSchemas";
-import { formatDateTime } from "~/lib/utils";
 import { Button } from "~/components/ui/button";
+import { tempSchema, type Temp } from "~/zodSchemas";
+import { zodResolver } from "@hookform/resolvers/zod";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "~/components/ui/dialog";
+import { type ReactNode, useEffect, useState } from "react";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "~/components/ui/form";
+import { Input } from "~/components/ui/input";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "~/components/ui/popover";
+import { cn } from "~/lib/utils";
+import { format } from "date-fns";
+import { CalendarIcon } from "lucide-react";
+import { Calendar } from "~/components/ui/calendar";
+import { TimePickerDemo } from "./TimePicker/time-picker-demo";
+import { toast } from "sonner";
 
 type Props = {
-  data: Temp;
-  onSubmit: (data: Temp) => void;
-  disabled: boolean;
-  onCancel: () => void;
+  children: ReactNode;
+  date?: Date;
+  temp?: number;
+  submit: (data: Temp) => Promise<void>;
 };
-const SampleForm = ({
-  data: { date, temp },
-  onSubmit,
-  disabled,
-  onCancel,
-}: Props) => {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<Temp>({
+const SampleForm = ({ date, submit, temp, children }: Props) => {
+  const [open, setOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const onSubmit = async (data: Temp) => {
+    try {
+      setLoading(true);
+      await submit(data);
+      toast.success("Success!");
+      setOpen(false);
+    } catch (error) {
+      toast.error("Something went wrong...");
+    }
+    setLoading(false);
+  };
+  const form = useForm<Temp>({
+    defaultValues: { date: date ?? new Date(), temp: temp ?? 36.6 },
     resolver: zodResolver(tempSchema),
   });
-  if (disabled) {
-    return (
-      <div className="flex size-52 flex-col items-center justify-center gap-4 rounded-3xl bg-c3">
-        <p>Please wait</p>
-        <ClipLoader size={100} />
-      </div>
-    );
-  }
+
+  useEffect(() => {
+    if (open && !date) {
+      form.setValue("date", new Date());
+    }
+  }, [open, form, date]);
+
   return (
-    <form
-      onSubmit={handleSubmit(onSubmit)}
-      className="flex flex-col gap-5 rounded-md border border-black bg-c1 p-5"
-    >
-      <h2 className="text-center text-2xl">Edit measurement</h2>
-      <div className="grid grid-cols-2 gap-2">
-        <label htmlFor="temp">Temperature</label>
-        <input
-          id="temp"
-          className="border"
-          {...register("temp")}
-          defaultValue={temp}
-        />
-        {errors.temp && <p>{errors.temp.message}</p>}
-        <label htmlFor="date">Date</label>
-        <input
-          id="date"
-          type="datetime-local"
-          {...register("date")}
-          defaultValue={formatDateTime(date)}
-        />
-        {errors.date && <p>{errors.date.message}</p>}
-      </div>
-      <div className="flex justify-evenly gap-4">
-        <Button variant="secondary" onClick={onCancel} type="button">
-          Cancel
-        </Button>
-        <Button type="submit">Save</Button>
-      </div>
-    </form>
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger asChild>{children}</DialogTrigger>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Add measurement</DialogTitle>
+        </DialogHeader>
+        <Form {...form}>
+          <form
+            id="addTempForm"
+            onSubmit={form.handleSubmit(onSubmit)}
+            className="space-y-8"
+          >
+            <FormField
+              control={form.control}
+              name="temp"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Temperature</FormLabel>
+                  <FormControl>
+                    <Input {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="date"
+              render={({ field }) => (
+                <FormItem className="flex flex-col">
+                  <FormLabel className="text-left">DateTime</FormLabel>
+                  <Popover>
+                    <FormControl>
+                      <PopoverTrigger asChild>
+                        <Button
+                          variant="outline"
+                          className={cn(
+                            "w-[280px] justify-start text-left font-normal",
+                            !field.value && "text-muted-foreground",
+                          )}
+                        >
+                          <CalendarIcon className="mr-2 h-4 w-4" />
+                          {field.value ? (
+                            format(field.value, "PPP HH:mm:ss")
+                          ) : (
+                            <span>Pick a date</span>
+                          )}
+                        </Button>
+                      </PopoverTrigger>
+                    </FormControl>
+                    <PopoverContent className="w-auto p-0">
+                      <Calendar
+                        mode="single"
+                        selected={field.value}
+                        onSelect={field.onChange}
+                        initialFocus
+                      />
+                      <div className="border-t border-border p-3">
+                        <TimePickerDemo
+                          setDate={field.onChange}
+                          date={field.value}
+                        />
+                      </div>
+                    </PopoverContent>
+                  </Popover>
+                </FormItem>
+              )}
+            />
+          </form>
+        </Form>
+        <DialogFooter className="flex-row justify-between">
+          <DialogClose asChild>
+            <Button variant="secondary" type="button">
+              Close
+            </Button>
+          </DialogClose>
+          <Button disabled={loading} form="addTempForm" type="submit">
+            Submit
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   );
 };
 
