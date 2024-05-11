@@ -3,7 +3,7 @@
 import { createId } from "@paralleldrive/cuid2";
 import { db } from "../db";
 import { temps } from "../db/schema";
-import type { Sample, Temp, FromTo } from "~/zodSchemas";
+import type { Sample, Temp } from "~/zodSchemas";
 import { getServerAuthSession } from "../auth";
 import { revalidatePath } from "next/cache";
 import { and, asc, eq, gte, lte } from "drizzle-orm";
@@ -41,7 +41,13 @@ export const editSample = async ({ id, date, temp }: Sample) => {
   revalidatePath("/");
 };
 
-export const getSamples = async ({ from, to }: FromTo) => {
+export const getSamples = async ({
+  from,
+  to,
+}: {
+  from: Date | null;
+  to: Date | null;
+}) => {
   const session = await getServerAuthSession();
   if (!session) {
     throw new Error("Unauthorized");
@@ -52,8 +58,8 @@ export const getSamples = async ({ from, to }: FromTo) => {
     .where(
       and(
         eq(temps.createdById, session.user.id),
-        gte(temps.createdAt, from),
-        lte(temps.createdAt, to),
+        from ? gte(temps.createdAt, from) : undefined,
+        to ? lte(temps.createdAt, to) : undefined,
       ),
     )
     .orderBy(asc(temps.createdAt));
