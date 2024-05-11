@@ -1,61 +1,55 @@
 "use client";
-import { useRouter } from "next/navigation";
-import { dateToString } from "~/lib/utils";
-import { useState } from "react";
-import { type FromTo } from "~/zodSchemas";
+
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { type ReactNode } from "react";
 import { Button } from "~/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "~/components/ui/dropdown-menu";
+import Icon from "~/icons/Icon";
+import { FILTER_OPTIONS } from "~/lib/filterDatesOptions";
 
-const FilterDates = () => {
+type Option = keyof typeof FILTER_OPTIONS;
+
+type Props = { label: string; children: ReactNode };
+const FilterDates = ({ label, children }: Props) => {
   const router = useRouter();
-
-  const changeDate = ({ from, to }: FromTo) => {
-    router.push(`/?from=${dateToString(from)}&to=${dateToString(to)}`);
+  const searchParams = useSearchParams();
+  const pathname = usePathname();
+  const setRange = (range: Option) => {
+    const params = new URLSearchParams(searchParams);
+    params.set("range", range);
+    router.push(`${pathname}?${params.toString()}`, { scroll: false });
   };
-
-  const firstDayOfThisMonth = new Date();
-  const lastDayOfThisMonth = new Date(
-    firstDayOfThisMonth.getFullYear(),
-    firstDayOfThisMonth.getMonth() + 1,
-    0,
-  );
-  firstDayOfThisMonth.setDate(1);
-  const [filter, setFilter] = useState<FromTo>({
-    from: firstDayOfThisMonth,
-    to: lastDayOfThisMonth,
-  });
   return (
-    <form
-      onSubmit={(e) => {
-        e.preventDefault();
-        changeDate(filter);
-      }}
-      className="flex flex-col gap-2 rounded-md bg-c3 p-3"
-    >
-      <div className="flex items-center justify-between">
-        <label htmlFor="start-date">Från</label>
-        <input
-          id="start-date"
-          type="date"
-          className="px-1"
-          value={dateToString(filter.from)}
-          onChange={({ target: { value } }) =>
-            setFilter((p) => ({ ...p, from: new Date(value) }))
-          }
-        />
-      </div>
-      <div className="flex items-center justify-between">
-        <label htmlFor="end-date">Till</label>
-        <input
-          id="end-date"
-          type="date"
-          value={dateToString(filter.to)}
-          onChange={({ target: { value } }) =>
-            setFilter((p) => ({ ...p, to: new Date(value) }))
-          }
-        />
-      </div>
-      <Button type="submit">Ok</Button>
-    </form>
+    <Card>
+      <CardHeader className="flex flex-row items-center justify-between gap-4">
+        <CardTitle>Temperature by date</CardTitle>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant={"secondary"}>
+              <span>{label}</span>
+              <Icon icon="down" className="size-6 fill-c4" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent>
+            {Object.entries(FILTER_OPTIONS).map(([key, value]) => (
+              <DropdownMenuItem
+                onClick={() => setRange(key as Option)}
+                key={key}
+              >
+                {value.label}
+              </DropdownMenuItem>
+            ))}
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </CardHeader>
+      <CardContent>{children}</CardContent>
+    </Card>
   );
 };
 
