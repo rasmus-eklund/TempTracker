@@ -13,12 +13,4 @@ export const tempSchema = z.object({
 });
 export type Temp = z.infer<typeof tempSchema>;
 
-export const idSchema = z.object({ id: z.string() });
-
-export const fromToSchema = z.object({
-  from: z.coerce.date(),
-  to: z.coerce.date(),
-});
-export type FromTo = z.infer<typeof fromToSchema>;
-
 export type UserRole = "user" | "admin";
