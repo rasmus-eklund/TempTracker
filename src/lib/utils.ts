@@ -19,18 +19,3 @@ export const formatDateTime = (date: Date) => {
 export const dateToString = (date: Date) => {
   return date.toLocaleString("sv-SE", { dateStyle: "short" });
 };
-
-export const parseDates = ({
-  searchParams,
-}: {
-  searchParams?: { from?: string; to?: string };
-}) => {
-  if (searchParams) {
-    const { from, to } = searchParams;
-    return {
-      from: from ? new Date(from) : new Date("2000-01-01"),
-      to: to ? new Date(to) : new Date(),
-    };
-  }
-  return { from: new Date("2000-01-01"), to: new Date() };
-};
