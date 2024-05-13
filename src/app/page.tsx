@@ -1,5 +1,4 @@
 import { getServerAuthSession } from "~/server/auth";
-import SampleItem from "./_components/SampleItem";
 import FilterDates from "./_components/FilterDates";
 
 import dynamic from "next/dynamic";
