@@ -6,6 +6,7 @@ import dynamic from "next/dynamic";
 import AddSample from "./_components/AddSample";
 import { getSamples } from "~/server/api/temps";
 import { FILTER_OPTIONS, getRangeOption } from "~/lib/filterDatesOptions";
+import SampleList from "./_components/SampleList";
 
 const Chart = dynamic(() => import("./_components/charts/tempsByDay"), {
   ssr: false,
@@ -33,11 +34,7 @@ const Home = async ({ searchParams }: Props) => {
           <Chart data={data} />
         </FilterDates>
         <AddSample />
-        <ul className="flex flex-col gap-2">
-          {data.reverse().map((item) => (
-            <SampleItem key={item.id} item={item} />
-          ))}
-        </ul>
+        <SampleList data={data} />
       </main>
     );
   }
