@@ -6,6 +6,7 @@ import AddSample from "./_components/AddSample";
 import { getSamples } from "~/server/api/temps";
 import { FILTER_OPTIONS, getRangeOption } from "~/lib/filterDatesOptions";
 import SampleList from "./_components/SampleList";
+import { averageByDate } from "~/lib/utils";
 
 const Chart = dynamic(() => import("./_components/charts/tempsByDay"), {
   ssr: false,
@@ -30,7 +31,7 @@ const Home = async ({ searchParams }: Props) => {
     return (
       <main className="flex grow flex-col gap-4 bg-c1 py-2 md:p-5">
         <FilterDates label={range.label}>
-          <Chart data={data} />
+          <Chart data={averageByDate(data)} />
         </FilterDates>
         <AddSample />
         <SampleList data={data} />
